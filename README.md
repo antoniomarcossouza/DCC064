@@ -1,5 +1,17 @@
 # DCC064 - Sistemas Distribuídos
 
+## Arquitetura
+
+```
+flowchart LR
+    A((P))
+    B[/Queue/]
+    C((C1))
+
+    A --> B
+    B --> C
+```
+
 ## Passo 1: Rodar o RabbitMQ com a imagem do Docker
 
 ```
