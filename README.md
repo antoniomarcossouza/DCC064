@@ -6,7 +6,7 @@
 flowchart LR
     A((P))
     B[/Queue/]
-    C((C1))
+    C((C))
 
     A --> B
     B --> C
