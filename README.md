@@ -2,7 +2,7 @@
 
 ## Arquitetura
 
-```
+```mermaid
 flowchart LR
     A((P))
     B[/Queue/]
