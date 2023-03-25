@@ -13,10 +13,8 @@ amqp.connect("amqp://localhost", function (error, connection) {
       throw error;
     }
 
-    let queue = process.env.QUEUE_NAME;
-
     channel.assertQueue(queue, {
-      durable: false,
+      durable: true,
     });
 
     console.log(`Waiting for messages in ${queue}. To exit, press CTRL+C`);
@@ -27,7 +25,7 @@ amqp.connect("amqp://localhost", function (error, connection) {
         console.log("Received %s", msg.content.toString());
       },
       {
-        noAck: true,
+        noAck: false,
       }
     );
   });
