@@ -6,10 +6,12 @@
 flowchart LR
     A((P))
     B[/Queue/]
-    C((C))
+    C((C1))
+    D((C2))
 
     A --> B
     B --> C
+    B --> D
 ```
 
 ## Passo 1: Rodar o RabbitMQ com a imagem do Docker
