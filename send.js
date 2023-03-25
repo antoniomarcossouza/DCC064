@@ -2,6 +2,8 @@ const amqp = require("amqplib/callback_api");
 require("dotenv").config();
 
 hostname = `amqp://${process.env.QUEUE_HOST}:${process.env.PORT}`;
+const queue = process.env.QUEUE_NAME;
+const message = process.argv.slice(2).join(" ") || "Hello World!";
 
 amqp.connect(hostname, function (error, connection) {
   if (error) {

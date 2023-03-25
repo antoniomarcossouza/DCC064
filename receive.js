@@ -1,6 +1,8 @@
 const amqp = require("amqplib/callback_api");
 require("dotenv").config();
 
+let queue = process.env.QUEUE_NAME;
+
 amqp.connect("amqp://localhost", function (error, connection) {
   if (error) {
     throw error;
