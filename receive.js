@@ -21,8 +21,14 @@ amqp.connect("amqp://localhost", function (error, connection) {
 
     channel.consume(
       queue,
-      function (msg) {
-        console.log("Received %s", msg.content.toString());
+      function (message) {
+        var secs = message.content.toString().split(".").length - 1;
+
+        console.log("Received %s", message.content.toString());
+
+        setTimeout(function () {
+          console.log("Done");
+        }, secs * 1000);
       },
       {
         noAck: false,
