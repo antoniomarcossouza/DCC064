@@ -13,6 +13,8 @@ amqp.connect("amqp://localhost", function (error, connection) {
       throw error;
     }
 
+    channel.prefetch(1);
+
     channel.assertQueue(queue, {
       durable: true,
     });
