@@ -1,9 +1,10 @@
 const amqp = require("amqplib/callback_api");
 require("dotenv").config();
 
-let queue = process.env.QUEUE_NAME;
+const hostname = `amqp://${process.env.QUEUE_HOST}:${process.env.PORT}`;
+const queue = process.env.QUEUE_NAME;
 
-amqp.connect("amqp://localhost", function (error, connection) {
+amqp.connect(hostname, function (error, connection) {
   if (error) {
     throw error;
   }
@@ -26,10 +27,10 @@ amqp.connect("amqp://localhost", function (error, connection) {
       function (message) {
         var secs = message.content.toString().split(".").length - 1;
 
-        console.log("Received %s", message.content.toString());
+        console.log(`Message received: ${message.content.toString()}`);
 
         setTimeout(function () {
-          console.log("Done");
+          console.log(`Message '${message.content.toString()}' done.`);
         }, secs * 1000);
       },
       {
