@@ -45,12 +45,12 @@ async function main() {
           if (err) throw err;
 
           console.log(
-            `Waiting for messages in ${queue}. To exit, press CTRL+C`
+            `Waiting for messages in ${q.queue}. To exit, press CTRL+C`
           );
           channel.bindQueue(q.queue, exchange, "");
 
           channel.consume(
-            queue,
+            q.queue,
             async function (message) {
               console.log(`Task ${message.content.toString()} received.`);
 
