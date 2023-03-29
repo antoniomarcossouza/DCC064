@@ -23,7 +23,7 @@ amqp.connect(hostname, function (error, connection) {
       persistent: true,
     });
 
-    console.log(`Sent ${message}`);
+    console.log(`Sent task ${message}`);
   });
 
   setTimeout(function () {
