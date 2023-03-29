@@ -1,11 +1,10 @@
 const amqp = require("amqplib/callback_api");
-// const { exec } = require("child_process");
 const process = require("process");
 const { spawn } = require("child_process");
 require("dotenv").config();
 
 const hostname = `amqp://${process.env.QUEUE_HOST}:${process.env.PORT}`;
-const queue = process.env.QUEUE_NAME;
+const exchange = process.env.EXCHANGE_NAME;
 
 function cmd(...command) {
   let p = spawn(command[0], command.slice(1));
@@ -33,35 +32,38 @@ async function main() {
         throw error;
       }
 
-      channel.assertQueue(queue, {
-        durable: true,
+      channel.assertExchange(exchange, "fanout", {
+        durable: false,
       });
 
-      // channel.prefetch(1);
-
-      console.log(`Waiting for messages in ${queue}. To exit, press CTRL+C`);
-
-      channel.consume(
-        queue,
-        async function (message) {
-          console.log(`Task ${message.content.toString()} received.`);
-
-          // exec(
-          //   `sh ${message.content.toString()}`,
-          //   function (err, stdout, stderr) {
-          //     console.log(stdout);
-          //     console.log(stderr);
-          //     if (err != null) console.log(err);
-          //   }
-          // );
-          await cmd("sh", message.content.toString());
-
-          setTimeout(function () {
-            console.log(`Task '${message.content.toString()}' done.`);
-          });
-        },
+      channel.assertQueue(
+        "",
         {
-          noAck: false,
+          exclusive: true,
+        },
+        function (err, q) {
+          if (err) throw err;
+
+          console.log(
+            `Waiting for messages in ${queue}. To exit, press CTRL+C`
+          );
+          channel.bindQueue(q.queue, exchange, "");
+
+          channel.consume(
+            queue,
+            async function (message) {
+              console.log(`Task ${message.content.toString()} received.`);
+
+              await cmd("sh", message.content.toString());
+
+              setTimeout(function () {
+                console.log(`Task '${message.content.toString()}' done.`);
+              });
+            },
+            {
+              noAck: true,
+            }
+          );
         }
       );
     });

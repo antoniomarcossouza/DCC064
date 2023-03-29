@@ -2,27 +2,24 @@ const amqp = require("amqplib/callback_api");
 require("dotenv").config();
 
 const hostname = `amqp://${process.env.QUEUE_HOST}:${process.env.PORT}`;
-const queue = process.env.QUEUE_NAME;
+const exchange = process.env.EXCHANGE_NAME;
 const message = process.argv.slice(2).join(" ") || "Hello World!";
 
-amqp.connect(hostname, function (error, connection) {
-  if (error) {
-    throw error;
+amqp.connect(hostname, function (err, connection) {
+  if (err) {
+    throw err;
   }
 
-  connection.createChannel(function (error, channel) {
-    if (error) {
-      throw error;
+  connection.createChannel(function (err, channel) {
+    if (err) {
+      throw err;
     }
 
-    channel.assertQueue(queue, {
-      durable: true,
+    channel.assertExchange(exchange, "fanout", {
+      durable: false,
     });
 
-    channel.sendToQueue(queue, Buffer.from(message), {
-      persistent: true,
-    });
-
+    channel.publish(exchange, "", Buffer.from(message));
     console.log(`Sent task ${message}`);
   });
 
