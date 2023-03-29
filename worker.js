@@ -22,14 +22,14 @@ function cmd(...command) {
 }
 
 async function main() {
-  amqp.connect(hostname, function (error, connection) {
-    if (error) {
-      throw error;
+  amqp.connect(hostname, function (err, connection) {
+    if (err) {
+      throw err;
     }
 
-    connection.createChannel(function (error, channel) {
-      if (error) {
-        throw error;
+    connection.createChannel(function (err, channel) {
+      if (err) {
+        throw err;
       }
 
       channel.assertExchange(exchange, "fanout", {
