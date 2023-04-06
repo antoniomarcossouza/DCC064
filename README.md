@@ -18,8 +18,22 @@ flowchart LR
     C2 --> E
 ```
 
-## Passo 1: Rodar o RabbitMQ com a imagem do Docker
+## Execução
+
+### Passo 1: Rodar o RabbitMQ com a imagem do Docker
 
 ```
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.11-management
+```
+
+### Rodar o consumer
+
+```
+node worker.js
+```
+
+### Rodar o producer, enviando um arquivo `.sh` para ser executado
+
+```
+node send_task.js task.sh
 ```
